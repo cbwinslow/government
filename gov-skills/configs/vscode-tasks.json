@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "db:bootstrap",
+      "type": "shell",
+      "command": "psql \"$DATABASE_URL\" -f scripts/bootstrap_legislative_db.sql"
+    },
+    {
+      "label": "govinfo:backfill",
+      "type": "shell",
+      "command": "python scripts/gov_ingest.py govinfo-backfill --collection BILLSTATUS --congress 119"
+    },
+    {
+      "label": "govinfo:incremental",
+      "type": "shell",
+      "command": "python scripts/gov_ingest.py govinfo-incremental --collection BILLS"
+    },
+    {
+      "label": "congress:bills-sync",
+      "type": "shell",
+      "command": "python scripts/gov_ingest.py congress-sync --entity bills --congress 119"
+    },
+    {
+      "label": "dq:run",
+      "type": "shell",
+      "command": "python scripts/gov_ingest.py dq"
+    }
+  ]
+}

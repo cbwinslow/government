@@ -1,0 +1,30 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "db:bootstrap",
+      "type": "shell",
+      "command": "psql \"$DATABASE_URL\" -f sql/001_bootstrap_politicians.sql"
+    },
+    {
+      "label": "ingest:members",
+      "type": "shell",
+      "command": "python scripts/politician_ingest.py ingest-members --congress 119"
+    },
+    {
+      "label": "ingest:openfec",
+      "type": "shell",
+      "command": "python scripts/politician_ingest.py ingest-openfec --cycle 2026"
+    },
+    {
+      "label": "ingest:disclosures",
+      "type": "shell",
+      "command": "python scripts/politician_ingest.py ingest-disclosures --year 2025"
+    },
+    {
+      "label": "index:embeddings",
+      "type": "shell",
+      "command": "python scripts/politician_ingest.py index-embeddings --limit 1000"
+    }
+  ]
+}

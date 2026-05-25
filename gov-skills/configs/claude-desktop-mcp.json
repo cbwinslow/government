@@ -1,0 +1,21 @@
+{
+  "mcpServers": {
+    "govinfo": {
+      "command": "python",
+      "args": ["/ABSOLUTE/PATH/TO/scripts/govinfo_mcp_server.py"],
+      "env": {
+        "GOVINFO_API_KEY": "YOUR_API_KEY",
+        "GOVINFO_BASE_URL": "https://api.govinfo.gov",
+        "GOVINFO_BULKDATA_BASE": "https://www.govinfo.gov/bulkdata"
+      }
+    },
+    "congressgov": {
+      "command": "python",
+      "args": ["/ABSOLUTE/PATH/TO/scripts/congressgov_mcp_server.py"],
+      "env": {
+        "CONGRESS_API_KEY": "YOUR_API_KEY",
+        "CONGRESS_API_BASE": "https://api.congress.gov/v3"
+      }
+    }
+  }
+}

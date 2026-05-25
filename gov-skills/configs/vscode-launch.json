@@ -1,0 +1,23 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Python: GovInfo incremental",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/gov_ingest.py",
+      "args": ["govinfo-incremental", "--collection", "BILLSTATUS"],
+      "envFile": "${workspaceFolder}/configs/.env.example",
+      "console": "integratedTerminal"
+    },
+    {
+      "name": "Python: Congress sync",
+      "type": "python",
+      "request": "launch",
+      "program": "${workspaceFolder}/scripts/gov_ingest.py",
+      "args": ["congress-sync", "--entity", "bills", "--congress", "119"],
+      "envFile": "${workspaceFolder}/configs/.env.example",
+      "console": "integratedTerminal"
+    }
+  ]
+}

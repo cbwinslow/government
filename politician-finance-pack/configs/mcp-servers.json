@@ -1,0 +1,18 @@
+{
+  "mcpServers": {
+    "politician_db": {
+      "command": "python",
+      "args": ["scripts/politician_mcp_server.py"],
+      "env": {
+        "DATABASE_URL": "${env:DATABASE_URL}"
+      }
+    },
+    "openfec": {
+      "command": "python",
+      "args": ["scripts/openfec_mcp_server.py"],
+      "env": {
+        "FEC_API_KEY": "${env:FEC_API_KEY}"
+      }
+    }
+  }
+}

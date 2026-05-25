@@ -1,0 +1,21 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+# UV lock file
+uv.lock
+# Python version file
+.python-version
+# Refact tool directory
+.refact/
+# Environment files
+.env
+.env.example
+# OS generated files
+.DS_Store
