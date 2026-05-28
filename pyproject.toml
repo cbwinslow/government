@@ -5,8 +5,33 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "cohere>=7.0.1",
+    "epstein-pipeline>=1.0.4",
+    "haystack-ai>=2.29.0",
     "pylint>=4.0.5",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
+    "spacy>=3.8.14",
     "torch>=2.12.0",
+]
+
+[tool.pytest.ini_options]
+# Run only tests in this repo (none by default) and avoid descending into sub-repositories.
+testpaths = ["tests"]
+pythonpath = ["src"]
+asyncio_mode = "auto"
+addopts = "-q -ra"
+norecursedirs = [
+    "congress",
+    "courtlistener",
+    "epstein",
+    "financial-disclosures",
+    "openstates-monorepo",
+    "politician-finance-pack",
+    "gov-skills",
+    "data",
+    ".git",
+    ".venv",
+    ".refact",
+    "__pycache__",
 ]
