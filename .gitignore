@@ -19,3 +19,15 @@ uv.lock
 .env.example
 # OS generated files
 .DS_Store
+
+# Large data files - use git-lfs or external storage
+*.jsonl
+epstein/data/epstein_hf/
+epstein/output/processed_hf/
+
+# Downloaded datasets (too large for git)
+epstein/data/epstein_hf/
+epstein/output/processed_hf/
+
+# Query log files
+epstein/ql*
