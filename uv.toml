@@ -1,0 +1,7 @@
+# uv configuration for PyTorch
+# Pin torch to CPU-only index to avoid conflicting indexes (cpu vs cu128)
+# This avoids CUDA driver version conflicts on older systems
+# NVIDIA Tesla K80 max CUDA 11.4, driver 470.256.02
+# Use: uv pip install -e ".[embeddings]" --index-url https://download.pytorch.org/whl/cpu
+index-url = "https://download.pytorch.org/whl/cpu"
+extra-index-url = ["https://pypi.org/simple"]
