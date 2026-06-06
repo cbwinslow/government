@@ -1,0 +1,29 @@
+name: TradeMonitorAgent
+version: "1.0"
+description: >
+  Agent responsible for continuously monitoring the House Clerk and Senate 
+  endpoints for new financial disclosure PDFs. It parses the PDF, extracts 
+  the stock tickers, and pushes the payload to the ingestion websocket.
+
+system_prompt: >
+  You are the Trade Monitor Agent. Your primary objective is to intercept 
+  politician financial disclosures the absolute second they are published.
+  When a PDF drops, you must:
+  1. Extract the Member Name, Transaction Date, Ticker, and Amount.
+  2. Format it into the standard JSON schema.
+  3. Ensure no hallucinated data is included.
+  4. Pass the Ticker to the MarketDataAgent to enrich the payload.
+
+required_tools:
+  - extract_pdf_trades
+  - broadcast_websocket
+
+output_schema:
+  type: object
+  properties:
+    member_name: { type: string }
+    ticker: { type: string }
+    transaction_date: { type: string }
+    amount_range: { type: string }
+    doc_id: { type: string }
+  required: [member_name, ticker, transaction_date, amount_range]

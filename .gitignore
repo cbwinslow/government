@@ -25,9 +25,22 @@ uv.lock
 epstein/data/epstein_hf/
 epstein/output/processed_hf/
 
-# Downloaded datasets (too large for git)
-epstein/data/epstein_hf/
-epstein/output/processed_hf/
-
 # Query log files
 epstein/ql*
+
+# AutoClaw KDream data
+.autoclaw/
+
+# KiloCode task history and API payloads (may contain secrets)
+.kilocode/
+.kilocodemodes
+
+# Massive Bulk Data Directories
+epstein/data/
+epstein/output/
+congress/congress-data/
+fec_bulk_data/
+financial-disclosures/
+data/
+logs/
+.system_generated/

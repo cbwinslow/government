@@ -1,0 +1,12 @@
+govdata_profile:
+  target: dev
+  outputs:
+    dev:
+      type: postgres
+      host: 172.25.10.64
+      user: govadmin
+      password: govpassword
+      port: 5433
+      dbname: govdata
+      schema: public
+      threads: 4

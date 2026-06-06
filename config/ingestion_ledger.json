@@ -1,0 +1,32 @@
+{
+  "datasets": {
+    "financial_disclosures_xml": {
+      "total_files": 0,
+      "status": "IN_PROGRESS",
+      "updated_at": "2026-06-05T20:04:23.158896"
+    }
+  },
+  "files": [
+    {
+      "filepath": "/home/cbwinslow/workspace/government/financial-disclosures/extracted/2026/2026FD.txt",
+      "dataset": "financial_disclosures_xml",
+      "status": "VECTORIZED",
+      "created_at": "2026-06-05T20:04:23.142775",
+      "updated_at": "2026-06-05T20:04:23.142799",
+      "details": {
+        "collection": "financial_pdfs"
+      }
+    },
+    {
+      "filepath": "/home/cbwinslow/workspace/government/financial-disclosures/extracted/2026/2026FD.xml",
+      "dataset": "financial_disclosures_xml",
+      "status": "VECTORIZED",
+      "created_at": "2026-06-05T20:04:23.158862",
+      "updated_at": "2026-06-05T20:04:23.158887",
+      "details": {
+        "collection": "financial_pdfs"
+      }
+    }
+  ],
+  "last_updated": "2026-06-05T20:04:23.158904"
+}

@@ -1,0 +1,63 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: ankane/pgvector:latest
+    container_name: gov_postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-govadmin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-govpassword}
+      POSTGRES_DB: ${POSTGRES_DB:-govdata}
+    ports:
+      - "172.25.10.64:5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:latest
+    container_name: gov_qdrant
+    ports:
+      - "172.25.10.64:6335:6333"
+      - "172.25.10.64:6336:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: gov_redis
+    ports:
+      - "172.25.10.64:6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+
+  langfuse-server:
+    image: langfuse/langfuse:2
+    container_name: gov_langfuse
+    depends_on:
+      - postgres
+    ports:
+      - "172.25.10.64:3001:3000"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-govadmin}:${POSTGRES_PASSWORD:-govpassword}@postgres:5432/${POSTGRES_DB:-govdata}
+      - NEXTAUTH_URL=http://localhost:3001
+      - NEXTAUTH_SECRET=supersecret123
+      - SALT=supersalt123
+    restart: unless-stopped
+
+  flowise:
+    image: flowiseai/flowise:latest
+    container_name: gov_flowise
+    restart: unless-stopped
+    ports:
+      - "172.25.10.64:3002:3000"
+    volumes:
+      - flowise_data:/root/.flowise
+
+volumes:
+  postgres_data:
+  qdrant_data:
+  redis_data:
+  flowise_data:

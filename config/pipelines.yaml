@@ -1,0 +1,57 @@
+compute_nodes:
+  # Windows Client (RTX 3060) - Optimized for high-speed inference / Agent logic
+  cbwwin:
+    type: "ollama"
+    url: "http://172.25.215.34:11434"
+    role: "inference"
+
+  # Dell R720 Server (Tesla K40/K80) - Optimized for massive context windows & embedding
+  cbwdellr720:
+    type: "ollama"
+    url: "http://172.25.10.64:11434"
+    role: "embedding"
+
+pipelines:
+  congress_legislators:
+    enabled: true
+    framework: "dlt"
+    source: "yaml"
+    paths: 
+      - "congress/congress-legislators/legislators-current.yaml"
+      - "congress/congress-legislators/legislators-historical.yaml"
+    destination: "postgres"
+    schema: "congress_data"
+    primary_key: "id__bioguide"
+
+  fred_economic:
+    enabled: true
+    framework: "dlt"
+    source: "rest_api"
+    base_url: "https://api.stlouisfed.org/fred/series/observations"
+    endpoints: 
+      - "GDP"       # Gross Domestic Product
+      - "UNRATE"    # Unemployment Rate
+      - "CPIAUCSL"  # Consumer Price Index
+      - "HOUST"     # Housing Starts
+    destination: "postgres"
+    schema: "economic_data"
+
+  financial_disclosures:
+    enabled: true
+    framework: "dlt"
+    source: "zip_archives"
+    destination: "postgres"
+    schema: "financial_data"
+
+  openstates_bills:
+    enabled: true 
+    framework: "llamaindex"
+    source: "openstates_scrapers"
+    destination: "qdrant"
+    
+  epstein_network:
+    enabled: true
+    framework: "dlt"
+    source: "epstein_flight_logs"
+    destination: "postgres"
+    schema: "network_mapping"
