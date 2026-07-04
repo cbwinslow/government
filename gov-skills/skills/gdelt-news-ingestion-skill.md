@@ -1,3 +1,15 @@
+---
+name: gdelt-news-ingestion
+description: Build and operate the GDELT Project news ingestion pipeline to extract politician quotes and statements as "Words" for the Honesty Engine. Use for monitoring global news, extracting attributed quotes, classifying issue areas, and feeding context to consistency scoring.
+category: integration-documentation
+risk: low
+source: community
+tags: [gdelt, news, ingestion, pipeline, quotes, honesty-engine, words, sentiment, nlp]
+tools: [python, requests, newspaper3k, readability, postgresql, sqlalchemy, openrouter, gemini]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: gdelt-news-ingestion
 
 ## Purpose
@@ -59,3 +71,17 @@ words_context = [
 - "Backfill GDELT mentions for Senator X over the last 90 days. Group quotes by issue category."
 - "Monitor GDELT in near-real-time for new mentions of the 10 most active senators this week."
 - "Cross-reference GDELT extracted quotes with Congress.gov voting records for Representative Y."
+
+## When to Use
+- Setting up GDELT news ingestion for politician quote extraction
+- Building "Words" context for Honesty Engine scoring
+- Monitoring real-time news for specific politicians or committees
+- Cross-referencing news quotes with voting records
+
+## Limitations
+- GDELT free tier has rate limits
+- Low-quality sources require filtering
+- Translated content may lose nuance
+- Opinion pieces mixed with news
+- Requires article text extraction (newspaper3k/readability)
+- Deduplication by URL + quote text needed

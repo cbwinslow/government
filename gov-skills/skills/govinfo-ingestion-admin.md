@@ -1,3 +1,15 @@
+---
+name: govinfo-ingestion-admin
+description: Build and maintain pipelines for govinfo.gov content discovery, bulk download, normalization, database ingestion, metadata refreshes, and operational admin workflows. Use when you need to ingest federal documents (bills, laws, regulations, congressional records) from GovInfo into PostgreSQL with raw/core schemas, partitioning, and idempotent upserts.
+category: integration-documentation
+risk: low
+source: community
+tags: [govinfo, ingestion, pipeline, postgresql, federal-documents, api, bulk-data]
+tools: [python, postgresql, dlt, sqlalchemy, requests, xml, json]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: govinfo-ingestion-admin
 
 ## Purpose
@@ -117,3 +129,17 @@ When executing work, frame requests like:
 - "Design a resilient GovInfo ingestion pipeline for BILLSTATUS and BILLS into PostgreSQL with raw/core schemas, partitioning, and idempotent upserts."
 - "Generate a backfill job from GovInfo bulkdata JSON listings plus an incremental poller using collections lastModified endpoints."
 - "Create SQL checks for GovInfo package/granule completeness, duplicate keys, and stale collections."
+
+## When to Use
+- Building new GovInfo ingestion pipelines
+- Backfilling historical federal documents
+- Setting up incremental polling for new publications
+- Creating data quality checks for GovInfo data
+- Designing PostgreSQL schemas for federal document storage
+
+## Limitations
+- Requires api.data.gov API key (free tier: 1000 requests/hour)
+- GovInfo API has rate limits; implement proper throttling
+- Bulk data downloads can be large (GBs); plan storage accordingly
+- XML namespaces vary by collection; parser must be flexible
+- Does not cover state/local government documents

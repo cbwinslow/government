@@ -21,3 +21,15 @@ The agent returns data in the following format:
 
 ## This is the site where I got the API documentation and examples:
 https://fred.stlouisfed.org/docs/api/fred/v2/release_observations.html
+
+
+## OPENSTATES.ORG API
+
+api_key = a4cffebb-1787-481f-be4c-762638ed0a7f
+
+https://open.pluralpolicy.com/data/
+https://docs.openstates.org/api-v3/
+https://v3.openstates.org/docs
+
+# Consider using CKAN
+https://github.com/ckan/ckan

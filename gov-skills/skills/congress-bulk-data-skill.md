@@ -1,3 +1,15 @@
+---
+name: congress-bulk-data-skill
+description: Synchronize bulk data from unitedstates/congress community scrapers including bills, amendments, roll-call votes, and legislator demographics. Use for keeping local congress-data directory current with federal legislative data.
+category: integration-documentation
+risk: low
+source: community
+tags: [congress, bulk-data, bills, votes, legislators, govinfo, sync, unitedstates]
+tools: [python, uv, dlt, llamaindex, postgresql, sqlalchemy, yaml, xml]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Congress & GovInfo Bulk Data Sync
 
 ## Overview
@@ -52,3 +64,16 @@ cd /home/cbwinslow/workspace/government/congress/congress-legislators
 uv run python scripts/house_contacts.py
 uv run python scripts/senate_contacts.py
 ```
+
+## When to Use
+- Syncing bulk congressional data from unitedstates/congress
+- Updating local congress-data directory with latest bills/votes
+- Refreshing legislator contact information and demographics
+- Running config-driven ingestion pipelines
+
+## Limitations
+- Requires config/pipelines.yaml with enabled pipelines
+- Target congresses hardcoded (106-119)
+- GovInfo bulk data requires API key
+- Uses uv for Python execution
+- Separate scripts for bills, votes, legislators

@@ -1,44 +1,44 @@
 from langgraph.graph import StateGraph, END
-from opendiscourse.swarm.state import AgentState
-from opendiscourse.swarm.agents.supervisor import supervisor_node
-from opendiscourse.swarm.agents.congress_agent import congress_node
+from langchain_core.messages import HumanMessage
+
+from src.opendiscourse.swarm.state import AgentState
+from src.opendiscourse.swarm.agents.supervisor import supervisor_node
+from src.opendiscourse.swarm.agents.scraper_agent import scraper_node
 
 def build_graph() -> StateGraph:
-    """
-    Constructs the LangGraph Swarm workflow.
-    """
-    # 1. Initialize the graph with our custom State
+    """Compiles the LangGraph nodes into a state machine."""
     workflow = StateGraph(AgentState)
     
-    # 2. Add Nodes (Agents)
+    # 1. Add Nodes
     workflow.add_node("supervisor", supervisor_node)
-    workflow.add_node("congress_agent", congress_node)
+    workflow.add_node("scraper_agent", scraper_node)
     
-    # 3. Define the Entry Point
+    # We will add graph_agent later
+    # workflow.add_node("graph_agent", graph_node)
+    
+    # 2. Add Edges
+    # Entry point is always the supervisor
     workflow.set_entry_point("supervisor")
     
-    # 4. Define Edges (Routing Logic)
-    # The supervisor decides who goes next based on state["next_agent"]
+    # 3. Add Conditional Edges
+    # The supervisor decides where to route next based on state["next_node"]
     def route_from_supervisor(state: AgentState):
-        if state.get("next_agent") == "congress_agent":
-            return "congress_agent"
-        return END
+        decision = state.get("next_node", "FINISH")
+        if decision == "FINISH":
+            return END
+        return decision
         
     workflow.add_conditional_edges(
         "supervisor",
         route_from_supervisor,
         {
-            "congress_agent": "congress_agent",
+            "scraper_agent": "scraper_agent",
+            # "graph_agent": "graph_agent",
             END: END
         }
     )
     
-    # After a specialist finishes, it returns to the supervisor (or END, depending on architecture)
-    # Here, we route congress_agent to END for simplicity, but in a true cyclic swarm, 
-    # it would return to supervisor for the next task.
-    workflow.add_edge("congress_agent", END)
+    # For now, agents just return back to the supervisor when done
+    workflow.add_edge("scraper_agent", "supervisor")
     
     return workflow.compile()
-
-# Provide a compiled app instance for direct import
-app = build_graph()

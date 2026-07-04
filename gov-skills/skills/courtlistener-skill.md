@@ -1,3 +1,15 @@
+---
+name: courtlistener-skill
+description: Query CourtListener RECAP API to find lawsuits, dockets, and legal opinions involving politicians, extract legal conflicts, and append to the opendiscourse database as Actions or Discrepancies. Use when researching politician legal history for Honesty Engine scoring.
+category: integration-documentation
+risk: low
+source: community
+tags: [courtlistener, recap, legal, api, politicians, lawsuits, dockets, opinions]
+tools: [python, httpx, postgresql, sqlalchemy, openrouter, gemini]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: Courtlistener Legal History Extraction
 
 **Target Agent:** Research/ETL Agent
@@ -31,3 +43,16 @@ When instructed to audit a specific politician or process a batch of politicians
 ### 4. Update the Database
 1. Map the summarized legal stance to the politician's record in the `opendiscourse` database.
 2. This data should be classified under the 'Actions' array for the Honesty Engine to evaluate later.
+
+## When to Use
+- Researching politician legal history for Honesty Engine
+- Finding lawsuits involving specific politicians
+- Extracting legal stances from court opinions
+- Building discrepancy data for consistency scoring
+
+## Limitations
+- Requires CourtListener API token (free tier available)
+- API blocks anonymous requests
+- Search results may include false positives; filtering needed
+- Opinion text can be very long; token limits apply
+- State court coverage varies

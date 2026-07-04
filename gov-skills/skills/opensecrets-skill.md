@@ -1,3 +1,15 @@
+---
+name: opensecrets-skill
+description: Pull Campaign Finance, PACs, and Donor data from the OpenSecrets API to track political financial dependencies. Use for fetching top donors, industry contributions, and mapping CID to Master Identity for Honesty Engine context.
+category: integration-documentation
+risk: low
+source: community
+tags: [opensecrets, campaign-finance, pacs, donors, cid, api, political-money]
+tools: [python, requests, redis, postgresql, sqlalchemy, yaml]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # OpenSecrets API Ingestion Skill
 
 ## Overview
@@ -23,3 +35,16 @@ Use the `candSector` or `candIndustry` method to understand which broad industri
 
 ### 4. Rate Limiting
 Respect the OpenSecrets API limits (typically 200 calls per day for free tiers). Implement caching (e.g., Redis) so we don't query the same CID repeatedly on the same day.
+
+## When to Use
+- Fetching campaign finance data for politicians
+- Mapping OpenSecrets CID to Master Identity
+- Getting industry contribution breakdowns
+- Building financial context for Honesty Engine
+
+## Limitations
+- Requires OPENSECRETS_API_KEY in .env
+- Rate limited (200 calls/day free tier)
+- CID must be mapped from congress-legislators
+- Implement Redis caching to avoid repeated calls
+- Free tier may have limited historical data

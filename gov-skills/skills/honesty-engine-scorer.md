@@ -1,3 +1,15 @@
+---
+name: honesty-engine-scorer
+description: Configure, extend, or operate the Honesty Engine — the core LLM-based consistency scorer that evaluates politicians by cross-referencing their stated positions (Words) against their actual record (Actions). Use for scoring politician consistency, generating discrepancy reports, and tracking score deltas over time.
+category: integration-documentation
+risk: low
+source: community
+tags: [honesty-engine, consistency-scoring, llm, openrouter, politician, discrepancy, words-actions]
+tools: [python, openrouter, gemini, pydantic, postgresql, sqlalchemy]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: honesty-engine-scorer
 
 ## Purpose
@@ -70,3 +82,17 @@ To add new evidence types:
 - "Score all members of the House Banking Committee against their campaign finance disclosures."
 - "Compare a politician's consistency score over the last 3 Congresses — has it improved or worsened, and on which issues?"
 - "Generate a discrepancy report for Senator Y showing the highest-severity contradictions between their public statements and their committee votes."
+
+## When to Use
+- Scoring politician consistency between words and actions
+- Generating discrepancy reports for specific politicians
+- Tracking consistency score changes over time
+- Configuring LLM model fallback chains
+- Adding new evidence types to scoring context
+
+## Limitations
+- Requires OPENROUTER_API_KEY (free tier available)
+- Fusion mode consumes significant tokens across multiple models
+- Default temperature=0.2; adjust for factuality vs creativity tradeoff
+- Results depend on quality/completeness of Words/Actions context
+- Does not directly ingest data; requires pre-assembled context

@@ -1,3 +1,15 @@
+---
+name: database-population-agent
+description: Ensure strict, conflict-free interaction with the central PostgreSQL database when inserting newly discovered politicians, words, or actions. Use for master identity resolution, entity deduplication, and safe database operations across all ingestion pipelines.
+category: integration-documentation
+risk: low
+source: community
+tags: [database, postgresql, sqlalchemy, identity-resolution, deduplication, master-identity, etl]
+tools: [python, postgresql, sqlalchemy, alembic]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Playbook: OpenDiscourse Database Population Agent
 
 **Target Agent:** All Agents interacting with the `opendiscourse` project.
@@ -44,3 +56,16 @@ If a database constraint fails (e.g., `IntegrityError` due to a duplicate unique
 1. Catch the exception.
 2. Call `session.rollback()`.
 3. Log the error and proceed to the next item. Do not crash the entire ingestion swarm.
+
+## When to Use
+- Inserting new politicians from any data source
+- Resolving entity identities across federal/state systems
+- Preventing duplicate politician records
+- Safe database operations in ingestion pipelines
+- Managing Words/Actions for Honesty Engine
+
+## Limitations
+- Requires opendiscourse database models and config
+- Assumes centralized settings management
+- Does not handle schema migrations directly (use Alembic)
+- Fuzzy name matching requires manual verification

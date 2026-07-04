@@ -1,3 +1,15 @@
+---
+name: qdrant-vector-embedding-admin
+description: Configure Qdrant vector store, generate embeddings for legislative documents, bill text, politician profiles, and disclosure filings, and build semantic search across the government data corpus. Use for setting up collections, embedding pipelines, and hybrid search with PostgreSQL.
+category: integration-documentation
+risk: low
+source: community
+tags: [qdrant, vector, embeddings, semantic-search, sentence-transformers, bills, politicians, disclosures]
+tools: [python, qdrant-client, sentence-transformers, postgresql, sqlalchemy]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: qdrant-vector-embedding-admin
 
 ## Purpose
@@ -86,3 +98,17 @@ results = client.search(
 - "Create filtered semantic search queries for bills by congress number and topic."
 - "Design a hybrid search over politician disclosures that combines Qdrant vector search with PostgreSQL metadata filtering."
 - "Benchmark query latency between `all-MiniLM-L6-v2` and `BAAI/bge-large-en-v1.5` on 10,000 bills."
+
+## When to Use
+- Setting up Qdrant collections for government data
+- Generating embeddings for bills, politicians, disclosures
+- Building semantic search across legislative corpus
+- Configuring hybrid vector + metadata search
+- Benchmarking embedding models for production
+
+## Limitations
+- Qdrant must be running (Docker or standalone)
+- Embedding model choice affects vector dimensions (must match collection)
+- Large collections require significant memory
+- Incremental sync requires `updated_at` tracking in source data
+- Hybrid search requires PostgreSQL + Qdrant coordination

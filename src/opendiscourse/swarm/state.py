@@ -1,17 +1,18 @@
-from typing import TypedDict, Annotated, List, Optional
+from typing import TypedDict, Annotated, Sequence
 import operator
+from langchain_core.messages import BaseMessage
 
 class AgentState(TypedDict):
-    """
-    The state structure passed between all nodes in the LangGraph swarm.
-    """
-    user_request: str
-    messages: Annotated[List[dict], operator.add]
+    """The central state object passed between nodes in the LangGraph."""
     
-    # Routing
-    next_agent: Optional[str]
+    # The message history, append-only via the operator.add reducer
+    messages: Annotated[Sequence[BaseMessage], operator.add]
     
-    # Execution Tracking
-    downloaded_files: Annotated[List[str], operator.add]
-    errors: Annotated[List[str], operator.add]
-    status: str
+    # The next node to route to, determined by the Supervisor
+    next_node: str
+    
+    # The original query string for easy access
+    query: str
+    
+    # Any data extracted by the agents
+    extracted_data: dict

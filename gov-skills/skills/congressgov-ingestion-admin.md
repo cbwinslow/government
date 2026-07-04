@@ -1,3 +1,15 @@
+---
+name: congressgov-ingestion-admin
+description: Build and maintain pipelines for Congress.gov API v3 ingestion, legislative entity normalization, database administration, and downstream analytical/search workloads. Use when you need to ingest bills, amendments, members, committees, nominations, treaties, hearings, and reports from Congress.gov into PostgreSQL with rate-aware crawling and idempotent upserts.
+category: integration-documentation
+risk: low
+source: community
+tags: [congress, api, ingestion, pipeline, postgresql, legislative, bills, members, committees]
+tools: [python, postgresql, dlt, sqlalchemy, requests, xml, json]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: congressgov-ingestion-admin
 
 ## Purpose
@@ -91,3 +103,17 @@ Use requests like:
 - "Build a Congress.gov v3 ingestion pipeline into PostgreSQL with list/detail crawlers, offset checkpoints, and hourly quota controls."
 - "Generate DDL and ingestion code for bills, bill actions, sponsors, and committees with append-only history and latest snapshots."
 - "Create admin SQL to audit pagination gaps, duplicate bill keys, and stale entity families."
+
+## When to Use
+- Building new Congress.gov API ingestion pipelines
+- Backfilling historical legislative data
+- Setting up incremental polling for new bills/actions
+- Creating data quality checks for legislative data
+- Designing PostgreSQL schemas for legislative entities
+
+## Limitations
+- Requires Congress.gov API key (5,000 requests/hour limit)
+- API returns XML or JSON; parser must handle both
+- Rate limiting requires careful quota management
+- Historical data coverage varies by endpoint
+- Does not cover state legislative data (use openstates-ingestion-skill)

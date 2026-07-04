@@ -1,3 +1,15 @@
+---
+name: stock-watcher-skill
+description: Ingest pre-compiled structured JSON data containing stock trades from House, Senate, and Executive branch members. Use for loading Senate (2012-2020) and Congress/Executive (2023-2026) trade data, mapping to Master Identities, and inserting as financial Actions.
+category: integration-documentation
+risk: low
+source: community
+tags: [stock-trades, financial-disclosures, senate, congress, json, master-identity, actions]
+tools: [python, json, postgresql, sqlalchemy, vector-index]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Stock Watcher Ingestion Skill
 
 ## Overview
@@ -26,3 +38,15 @@ Transform each trade into an `Action` object for the database:
 
 ### 4. Note on Gaps
 Be aware that there is a gap in these datasets between 2021-2023. This gap is specifically filled by the `financial-disclosures-skill.md` which utilizes direct PDF OCR scraping for the missing years.
+
+## When to Use
+- Loading pre-compiled Senate stock trade data (2012-2020)
+- Loading Congress/Executive trade data (2023-2026)
+- Mapping trade filers to Master Identity UUIDs
+- Filling financial Actions for Honesty Engine
+
+## Limitations
+- Data gap between 2021-2023 (use financial-disclosures-skill for PDF OCR)
+- Requires opendiscourse database for identity resolution
+- JSON structure may vary between sources
+- Name matching requires fuzzy matching

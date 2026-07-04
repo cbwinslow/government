@@ -1,3 +1,15 @@
+---
+name: fastapi-dashboard-admin
+description: Develop, extend, or debug the OpenDiscourse FastAPI backend and React/TypeScript dashboard frontend. The API serves politician profiles, Honesty Engine scores, network graphs, and semantic search results. Use for building API endpoints, React components, and data serving patterns.
+category: integration-documentation
+risk: low
+source: community
+tags: [fastapi, react, typescript, dashboard, api, postgresql, qdrant, politician, honesty-engine]
+tools: [python, fastapi, uvicorn, react, typescript, tailwindcss, postgresql, qdrant-client, sqlalchemy]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: fastapi-dashboard-admin
 
 ## Purpose
@@ -89,3 +101,17 @@ The politician profile endpoint should join data from multiple tables:
 - "Wire up the semantic search input on the dashboard to the Qdrant-backed API endpoint."
 - "Add pagination to the politician list endpoint and update the dashboard table component."
 - "Build a network graph endpoint that returns committee co-memberships and donor overlaps."
+
+## When to Use
+- Building new FastAPI endpoints for politician data
+- Creating React dashboard components
+- Implementing semantic search with Qdrant
+- Building network graph visualizations
+- Adding pagination and filtering to list endpoints
+
+## Limitations
+- Requires PostgreSQL and Qdrant running
+- Frontend uses Tailwind CSS dark theme
+- CORS must be configured for dashboard origin
+- Rate limiting at 100 req/min per IP
+- Structured error responses required

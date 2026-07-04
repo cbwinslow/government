@@ -14,7 +14,7 @@ DATA_TYPE=${2:-bills}
 
 # Inject API Keys and Database URLs
 export OPENSTATES_API_KEY="a4cffebb-1787-481f-be4c-762638ed0a7f"
-export DATABASE_URL="postgresql://govadmin:govpassword@172.25.10.64:5433/govdata"
+export DATABASE_URL="postgresql://cbwinslow:123qweasd@172.25.10.64:5432/govdata"
 
 SCRAPER_DIR="/home/cbwinslow/workspace/government/openstates-monorepo/openstates-scrapers"
 cd "$SCRAPER_DIR"

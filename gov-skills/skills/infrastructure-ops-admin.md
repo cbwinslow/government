@@ -1,3 +1,15 @@
+---
+name: infrastructure-ops-admin
+description: Manage OpenDiscourse infrastructure: Docker Compose services, PostgreSQL setup and maintenance, Qdrant operations, Redis configuration, environment configuration, and CI/CD workflows. Use for deploying, monitoring, and maintaining the full data ingestion stack.
+category: integration-documentation
+risk: low
+source: community
+tags: [infrastructure, docker, postgresql, qdrant, redis, celery, ci-cd, environment, pgvector]
+tools: [docker, docker-compose, postgresql, qdrant, redis, celery, python, bash]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: infrastructure-ops-admin
 
 ## Purpose
@@ -98,6 +110,22 @@ GEMINI_API_KEY=your_key_here
 ## Celery task management
 ```bash
 # Start Celery worker
+```
+
+## When to Use
+- Starting/stopping infrastructure services
+- PostgreSQL schema management and maintenance
+- Qdrant collection operations and backups
+- Redis cache and queue management
+- Environment variable configuration
+- CI/CD pipeline management
+
+## Limitations
+- Requires Docker and Docker Compose
+- PostgreSQL uses pgvector extension (ankane/pgvector image)
+- Qdrant data persisted in Docker volume
+- Redis used for both Celery queue and caching
+- Environment variables in .env file at workspace root
 celery -A src.opendiscourse worker -l info
 
 # Monitor Celery queues

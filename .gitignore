@@ -1,46 +1,100 @@
-# Python-generated files
-__pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+# Government Pipeline — .gitignore
 
-# Virtual environments
-.venv
-# UV lock file
-uv.lock
+# Environment
+.env
+*.env.local
+.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual environment
+pipeline-venv/
+venv/
+.venv/
+
 # Python version file
 .python-version
-# Refact tool directory
-.refact/
-# Environment files
-.env
-.env.example
-# OS generated files
+
+# Package managers
+uv.lock
+
+# Data (large files — never commit)
+data/raw/*
+data/processed/*
+data/embeddings/*
+data/exports/*
+data/databases/*
+data/gdelt/
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/embeddings/.gitkeep
+!data/exports/.gitkeep
+
+# LLM server artifacts
+llama/embed-server.log
+llama/embed-server.pid
+
+# OS
 .DS_Store
+Thumbs.db
 
-# Large data files - use git-lfs or external storage
-*.jsonl
-epstein/data/epstein_hf/
-epstein/output/processed_hf/
+# IDE
+.vscode/settings.json
 
-# Query log files
-epstein/ql*
+# VS Code MCP (contains local paths)
+.vscode/mcp.json
 
-# AutoClaw KDream data
+# Large downloaded repos
+Epstein-Files/
+Epstein-research-data/
+
+# Node
+node_modules/
+
+# AI tooling directories
 .autoclaw/
-
-# KiloCode task history and API payloads (may contain secrets)
 .kilocode/
-.kilocodemodes
+.refact/
+.specstory/
+.repowise/
+.repowise-workspace.yaml
 
-# Massive Bulk Data Directories
+# Crush database and logs
+.crush/
+
+# Application logs
+*.log
+logs/
+gov_transformations/logs/
+
+# Data directories
 epstein/data/
 epstein/output/
-congress/congress-data/
-fec_bulk_data/
 financial-disclosures/
-data/
-logs/
-.system_generated/
+fec_bulk_data
+
+# Backups and archives
+*.tar.gz
+*.zip
+
+# Submodules and external repos
+congress/
+openstates-monorepo/
+
+# Config files with local paths
+config/ingestion_ledger.json
+config/models.yaml
+
+# Generated data
+dox/
+gov_transformations/target/
+
+# Local example configs
+gov-skills/configs/.env.example
+politician-finance-pack/configs/.env.example

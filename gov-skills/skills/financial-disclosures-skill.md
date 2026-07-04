@@ -1,3 +1,15 @@
+---
+name: financial-disclosures-skill
+description: Autonomously parse House and Senate financial disclosure ZIP files (2008-2026), extract stock transactions using OCR/LLMs, map filers to the Master Identity database, and insert transactions as Actions. Use when processing congressional financial disclosures to track stock trades, asset purchases, and conflicts of interest.
+category: integration-documentation
+risk: medium
+source: community
+tags: [financial-disclosures, pdf, ocr, llm, congress, stock-trades, identity-resolution, etl]
+tools: [python, zipfile, requests, pdfplumber, pymupdf, google-generativeai, sqlalchemy, postgresql]
+allowed-tools: Read Write Edit Bash Glob Grep
+compatibility: claude-code
+---
+
 # Skill: Financial Disclosures Autonomous Processing
 
 **Target Agent:** Extraction/ETL Agent (e.g. Letta, Cline)
@@ -40,3 +52,17 @@ For each downloaded PDF:
 1. Once the `Politician` entity is found, insert the extracted transactions into the database (you will need to ensure a `Transactions` table or similar JSON field exists on the `Politician` model representing their 'Actions').
 2. Commit the transaction. If it fails, log the error and move to the next PDF.
 3. Clean up the `/tmp/` directory when finished.
+
+## When to Use
+- Processing annual financial disclosure ZIP files (2008-2026)
+- Extracting stock transactions from congressional PDF forms
+- Mapping disclosure filers to master politician identities
+- Building transaction history for Honesty Engine scoring
+
+## Limitations
+- ZIP files only contain index files, not actual PDFs (must download separately)
+- PDF layouts vary by year and chamber (House vs Senate)
+- Requires vision-capable LLM for scanned/image-based PDFs
+- Name matching is fuzzy; requires verification by state/party
+- Rate limits on disclosure clerk website
+- Senate disclosures have different URL structure
