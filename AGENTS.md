@@ -20,16 +20,15 @@ Build a system that any user can clone, configure, and operate to:
 
 ## Non-negotiable engineering rules
 
-- Prefer bulk data over APIs for historical backfills when an authoritative bulk source exists.
+- Prefer authoritative bulk data over APIs for historical backfills.
 - Every ingestion must be idempotent, restartable, observable, and independently verifiable.
-- Never mark a dataset complete unless discovery and reconciliation evidence supports that claim.
-- Preserve raw bytes before parsing.
-- Store provenance, source URLs, timestamps, checksums, media types, and ingestion-run identifiers.
+- Never mark a dataset complete without discovery and reconciliation evidence.
+- Preserve raw bytes before parsing or normalization.
+- Capture provenance, source URLs, timestamps, checksums, media types, and run identifiers.
 - Never join people or organizations by display name alone.
 - Do not force source-specific records into misleading canonical tables.
 - Keep source adapters isolated from storage, orchestration, normalization, and serving layers.
-- Secrets must never be committed.
-- Avoid loading large downloaded datasets into Git; register them in the data catalog instead.
+- Never commit secrets or large downloaded datasets.
 - Add or update tests whenever behavior changes.
 
 ## Architecture boundaries
@@ -52,79 +51,81 @@ Domain contracts must not import concrete HTTP clients, database drivers, CLI fr
 
 ## Source adapter contract
 
-A source adapter is responsible for source-specific discovery and interpretation. It must not directly own global orchestration.
+A source adapter owns source-specific discovery and interpretation. It must not own global orchestration, storage policy, database transaction policy, or embedding policy.
 
 Expected lifecycle:
 
 ```text
-describe -> discover -> plan -> fetch -> verify -> extract -> normalize -> reconcile
+describe -> discover -> plan -> download -> verify -> extract -> normalize -> reconcile
 ```
 
 Each adapter must declare:
 
-- source identifier
-- datasets and supported formats
-- bulk/API/feed/sitemap capabilities
-- authentication requirements
-- rate limits and retry policy
-- durable source identifiers
-- checkpoint strategy
-- completeness/reconciliation strategy
-- license or terms metadata
+- source identifier;
+- datasets and formats;
+- bulk, API, feed, sitemap, archive, or database-dump capabilities;
+- authentication requirements;
+- rate limits and retry policy;
+- durable source identifiers;
+- checkpoint strategy;
+- completeness and reconciliation strategy;
+- license, terms, and attribution metadata.
 
 ## Data safety
 
 - Raw artifacts are immutable.
 - Derived representations are versioned and reproducible.
 - A content hash identifies bytes; a source identifier identifies the remote record.
-- Deletions or corrections at the source become catalog events, not silent local destruction.
-- Quarantine malformed or suspicious artifacts rather than discarding them.
+- Source deletions or corrections become catalog events, not silent local destruction.
+- Malformed or suspicious artifacts are quarantined rather than discarded.
+- Temporary files must be finalized atomically or removed after failure.
 
 ## Configuration
 
 Use validated settings with this precedence:
 
-1. packaged safe defaults
-2. project TOML/YAML configuration
-3. environment variables
-4. explicit CLI overrides
+1. packaged safe defaults;
+2. project TOML or YAML configuration;
+3. environment variables;
+4. explicit CLI overrides.
 
 Use nested environment names such as:
 
 ```text
 OPENDISCOURSE_DATABASE__DSN
 OPENDISCOURSE_STORAGE__ROOT
-OPENDISCOURSE_GOVINFO__API_KEY
+OPENDISCOURSE_SOURCES__GOVINFO_API_KEY
 ```
 
-Commit `.env.example`; never commit `.env`.
+Commit `.env.example`; never commit `.env`. Commands that display configuration must redact credentials, DSNs, tokens, and API keys.
 
 ## Repository policy
 
-The existing cloned repositories and datasets are legacy/reference assets. Do not couple new OpenDiscourse code to their internal layouts. When useful code is adopted:
+The cloned repositories and datasets in the original workspace are legacy or upstream reference assets. Do not couple new OpenDiscourse code to their internal layouts.
 
-1. document its origin and license;
+When adopting useful upstream behavior:
+
+1. record the repository URL, revision, license, and relevant paths;
 2. extract the smallest reusable concept;
 3. rewrite or wrap it behind an OpenDiscourse contract;
-4. add tests;
-5. avoid vendoring an entire upstream repository into the core package.
+4. add fixtures and tests;
+5. avoid vendoring an entire upstream repository into the core package;
+6. retain attribution and comply with license terms.
 
-## Definition of done
+## Definition of done for a source
 
 A source implementation is not complete until it has:
 
-- a source descriptor
-- configuration schema
-- discovery implementation
-- resumable manifest support
-- deterministic artifact paths
-- checksums and metadata capture
-- retry and rate-limit behavior
-- extraction tests using fixtures
-- normalization/lineage tests where applicable
-- reconciliation report
-- CLI documentation
-- operational runbook
+- a source descriptor and configuration schema;
+- complete discovery for its declared scope;
+- durable manifest and checkpoint support;
+- deterministic artifact storage with checksums;
+- bounded concurrency, retries, and rate-limit behavior;
+- extraction tests using committed fixtures;
+- normalization and lineage tests where applicable;
+- a reconciliation report;
+- CLI documentation and an operational runbook;
+- explicit license and data-terms notes.
 
 ## Agent workflow
 
@@ -132,20 +133,23 @@ Before editing:
 
 1. Read `docs/PROJECT_CHARTER.md`.
 2. Read `docs/ARCHITECTURE.md`.
-3. Read the relevant source catalog entry.
-4. State assumptions in the PR or commit description.
+3. Read `docs/SOURCE_CATALOG.md` and the relevant source entry.
+4. Check for a relevant `skills/*/SKILL.md`.
+5. State assumptions in the PR or commit description.
 
 While editing:
 
-- Keep changes focused.
+- Keep changes focused and independently reviewable.
 - Prefer typed interfaces and small composable components.
-- Do not add placeholders presented as working implementations.
+- Do not present scaffolds or placeholders as complete implementations.
+- Validate inputs and fail safely.
 - Log structured context without leaking credentials.
-- Fail safely and retain enough state to resume.
+- Retain enough durable state to resume after interruption.
+- Preserve backward compatibility unless an intentional breaking change is documented.
 
 Before finishing:
 
-- Run relevant tests and linters.
-- Verify documentation and examples match actual commands.
-- Record new architectural decisions in `docs/decisions/` when the change affects multiple modules.
-- List remaining risks explicitly.
+- Run Ruff, formatting, strict type checking, and relevant tests.
+- Verify documentation and command examples match actual behavior.
+- Record cross-cutting decisions under `docs/decisions/`.
+- List remaining risks, unsupported scopes, and data-completeness limits explicitly.
