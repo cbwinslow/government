@@ -1,0 +1,22 @@
+environment = "development"
+log_level = "INFO"
+
+[database]
+dsn = "postgresql+psycopg://opendiscourse:opendiscourse@localhost:5432/opendiscourse"
+pool_size = 10
+statement_timeout_seconds = 300
+
+[storage]
+root = "./data"
+temp_root = "./data/.tmp"
+checksum_algorithm = "sha256"
+
+[http]
+timeout_seconds = 60
+max_retries = 5
+user_agent = "OpenDiscourse/0.1 (+https://github.com/cbwinslow/government)"
+
+[ingestion]
+download_concurrency = 8
+extract_concurrency = 4
+fail_fast = false

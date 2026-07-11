@@ -1,33 +1,34 @@
-# Python-generated files
+# Python
 __pycache__/
-*.py[oc]
+*.py[cod]
+*.egg-info/
 build/
 dist/
-wheels/
-*.egg-info
+.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 
-# Virtual environments
-.venv
-# UV lock file
-uv.lock
-# Python version file
-.python-version
-# Refact tool directory
-.refact/
-# Environment files
+# Environments and secrets
+.venv/
 .env
-.env.example
-# OS generated files
-.DS_Store
+.env.*
+!.env.example
+.python-version
 
-# Large data files - use git-lfs or external storage
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+.refact/
+
+# OpenDiscourse runtime data
+/data/
+*.partial
+
+# Legacy large datasets remain external to Git
 *.jsonl
 epstein/data/epstein_hf/
 epstein/output/processed_hf/
-
-# Downloaded datasets (too large for git)
-epstein/data/epstein_hf/
-epstein/output/processed_hf/
-
-# Query log files
 epstein/ql*
