@@ -2,8 +2,11 @@
 
 from __future__ import annotations
 
+import asyncio
+import errno
 import hashlib
 import os
+import shutil
 import uuid
 from collections.abc import AsyncIterator
 from pathlib import Path
@@ -30,6 +33,26 @@ class ContentAddressedStorage:
         if len(checksum) != 64 or invalid_character:
             raise ValueError("checksum must be a lowercase SHA-256 hexadecimal digest")
         return self.objects_root / checksum[:2] / checksum[2:4] / checksum
+
+    async def _finalize(self, temporary_path: Path, destination: Path) -> None:
+        """Finalize an object atomically, including across filesystem boundaries."""
+
+        try:
+            os.replace(temporary_path, destination)
+            return
+        except OSError as error:
+            if error.errno != errno.EXDEV:
+                raise
+
+        destination_temporary = destination.with_name(
+            f".{destination.name}.{uuid.uuid4().hex}.partial"
+        )
+        try:
+            await asyncio.to_thread(shutil.copyfile, temporary_path, destination_temporary)
+            os.replace(destination_temporary, destination)
+            await asyncio.to_thread(temporary_path.unlink, missing_ok=True)
+        finally:
+            await asyncio.to_thread(destination_temporary.unlink, missing_ok=True)
 
     async def put_stream(
         self,
@@ -61,7 +84,7 @@ class ContentAddressedStorage:
             if destination.exists():
                 temporary_path.unlink(missing_ok=True)
             else:
-                os.replace(temporary_path, destination)
+                await self._finalize(temporary_path, destination)
 
             return StoredArtifact(
                 checksum=checksum,
