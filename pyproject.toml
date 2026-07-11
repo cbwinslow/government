@@ -1,37 +1,82 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
 [project]
-name = "government"
+name = "opendiscourse"
 version = "0.1.0"
-description = "Add your description here"
+description = "Bulk-first, provenance-preserving government data ingestion and research platform."
 readme = "README.md"
 requires-python = ">=3.12"
+license = { text = "MIT" }
+authors = [
+  { name = "Blaine Winslow", email = "blaine.winslow@gmail.com" },
+]
+keywords = ["government-data", "civic-tech", "data-lake", "postgresql", "research"]
+classifiers = [
+  "Development Status :: 2 - Pre-Alpha",
+  "Environment :: Console",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.12",
+  "Typing :: Typed",
+]
 dependencies = [
-    "cohere>=7.0.1",
-    "epstein-pipeline>=1.0.4",
-    "haystack-ai>=2.29.0",
-    "pylint>=4.0.5",
-    "pytest>=9.0.3",
-    "pytest-cov>=7.1.0",
-    "spacy>=3.8.14",
-    "torch>=2.12.0",
+  "aiofiles>=24.1.0",
+  "pydantic>=2.10.0",
+  "pydantic-settings>=2.7.0",
+  "rich>=13.9.0",
+  "structlog>=24.4.0",
+  "typer>=0.15.0",
 ]
 
-[tool.pytest.ini_options]
-# Run only tests in this repo (none by default) and avoid descending into sub-repositories.
-testpaths = ["tests"]
-pythonpath = ["src"]
-asyncio_mode = "auto"
-addopts = "-q -ra"
-norecursedirs = [
-    "congress",
-    "courtlistener",
-    "epstein",
-    "financial-disclosures",
-    "openstates-monorepo",
-    "politician-finance-pack",
-    "gov-skills",
-    "data",
-    ".git",
-    ".venv",
-    ".refact",
-    "__pycache__",
+[project.optional-dependencies]
+postgres = [
+  "alembic>=1.14.0",
+  "psycopg[binary,pool]>=3.2.0",
+  "sqlalchemy>=2.0.36",
 ]
+dev = [
+  "mypy>=1.14.0",
+  "pytest>=8.3.0",
+  "pytest-asyncio>=0.25.0",
+  "pytest-cov>=6.0.0",
+  "ruff>=0.9.0",
+  "types-aiofiles>=24.1.0",
+]
+
+[project.scripts]
+opendiscourse = "opendiscourse.cli.app:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/opendiscourse"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q -ra --strict-markers --strict-config"
+asyncio_mode = "auto"
+
+[tool.coverage.run]
+branch = true
+source = ["opendiscourse"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = true
+fail_under = 85
+
+[tool.ruff]
+target-version = "py312"
+line-length = 100
+src = ["src", "tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "ASYNC", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+packages = ["opendiscourse"]
+
+[tool.uv]
+default-groups = []
