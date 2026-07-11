@@ -113,6 +113,8 @@ def load_settings(config_path: Path | str | None = None) -> Settings:
 
     path = Path(config_path) if config_path is not None else Path("config/default.toml")
     values: dict[str, Any] = {}
+    if config_path is not None and not path.exists():
+        raise FileNotFoundError(f"Configuration file not found: {path}")
     if path.exists():
         with path.open("rb") as handle:
             values = tomllib.load(handle)

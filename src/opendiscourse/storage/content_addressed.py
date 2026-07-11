@@ -23,10 +23,18 @@ class ContentAddressedStorage:
         self.root = root.expanduser().resolve()
         self.temp_root = (temp_root or self.root / ".tmp").expanduser().resolve()
         self.objects_root = self.root / "objects" / "sha256"
+        self._initialized = False
+        self._initialize_lock = asyncio.Lock()
 
     async def initialize(self) -> None:
-        self.objects_root.mkdir(parents=True, exist_ok=True)
-        self.temp_root.mkdir(parents=True, exist_ok=True)
+        if self._initialized:
+            return
+        async with self._initialize_lock:
+            if self._initialized:
+                return
+            await asyncio.to_thread(self.objects_root.mkdir, parents=True, exist_ok=True)
+            await asyncio.to_thread(self.temp_root.mkdir, parents=True, exist_ok=True)
+            self._initialized = True
 
     def object_path(self, checksum: str) -> Path:
         invalid_character = any(character not in "0123456789abcdef" for character in checksum)

@@ -69,3 +69,14 @@ async def test_cross_filesystem_finalize_uses_atomic_destination_copy(
     assert store.object_path(artifact.checksum).read_bytes() == b"cross-filesystem-data"
     assert list(store.temp_root.glob("*.partial")) == []
     assert list(store.object_path(artifact.checksum).parent.glob("*.partial")) == []
+
+
+@pytest.mark.asyncio
+async def test_initialize_is_idempotent(tmp_path: Path) -> None:
+    store = ContentAddressedStorage(tmp_path / "lake")
+
+    await store.initialize()
+    await store.initialize()
+
+    assert store.objects_root.is_dir()
+    assert store.temp_root.is_dir()

@@ -33,9 +33,7 @@ def version() -> None:
 
 @config_app.command("show")
 def show_config(
-    config_file: Annotated[Path, typer.Option(exists=False, dir_okay=False)] = Path(
-        "config/default.toml"
-    ),
+    config_file: Annotated[Path | None, typer.Option(exists=False, dir_okay=False)] = None,
 ) -> None:
     """Validate configuration and print a redacted representation."""
     settings = load_settings(config_file)
@@ -44,9 +42,7 @@ def show_config(
 
 @app.command()
 def doctor(
-    config_file: Annotated[Path, typer.Option(exists=False, dir_okay=False)] = Path(
-        "config/default.toml"
-    ),
+    config_file: Annotated[Path | None, typer.Option(exists=False, dir_okay=False)] = None,
 ) -> None:
     """Validate local configuration and required writable directories."""
     settings = load_settings(config_file)
@@ -65,9 +61,7 @@ def doctor(
 
 @fixture_app.command("sync")
 def fixture_sync(
-    config_file: Annotated[Path, typer.Option(exists=False, dir_okay=False)] = Path(
-        "config/default.toml"
-    ),
+    config_file: Annotated[Path | None, typer.Option(exists=False, dir_okay=False)] = None,
 ) -> None:
     """Run the complete fixture discovery, download, and extraction cycle."""
 

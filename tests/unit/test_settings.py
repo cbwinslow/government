@@ -16,7 +16,7 @@ def test_environment_overrides_toml(tmp_path: Path, monkeypatch) -> None:
 
 def test_redacted_configuration_hides_secrets(monkeypatch) -> None:
     monkeypatch.setenv("OPENDISCOURSE_SOURCES__FEC_API_KEY", "sensitive")
-    settings = load_settings(Path("does-not-exist.toml"))
+    settings = load_settings(None)
 
     redacted = settings.redacted_dict()
 
@@ -33,3 +33,11 @@ def test_generic_user_agent_is_rejected(tmp_path: Path) -> None:
 
     with pytest.raises(ValidationError):
         load_settings(config)
+
+
+def test_explicit_missing_configuration_is_rejected(tmp_path: Path) -> None:
+    import pytest
+
+    missing = tmp_path / "missing.toml"
+    with pytest.raises(FileNotFoundError, match="Configuration file not found"):
+        load_settings(missing)
